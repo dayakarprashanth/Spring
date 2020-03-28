@@ -3,6 +3,7 @@ package com.example.hibernate.demo;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 import com.example.hibernate.demo.entity.Course;
 import com.example.hibernate.demo.entity.Instructor;
@@ -10,7 +11,7 @@ import com.example.hibernate.demo.entity.InstructorDetail;
 
 
 
-public class EagerLazyDemo {
+public class FetchJoinDemo {
 
 	public static void main(String[] args) {
 		
@@ -32,15 +33,26 @@ public class EagerLazyDemo {
 			//start transaction
 			session.beginTransaction();
 			
+			//Option 2: Hibernate Query with HQL
+			
 			// get instructor from DB
 			int theId = 1;
-			Instructor tempInstructor = session.get(Instructor.class, theId);
 			
-			System.out.println("Latest:  The Instructor is :" + tempInstructor);
-		
-			System.out.println("Latest:  The courses are=" + tempInstructor.getCourses());
-		
-		
+			Query<Instructor> query = session.createQuery("select i from Instructor i " 
+															+ "JOIN FETCH i.courses "
+															+"WHERE i.id=:theInstructorId",
+															Instructor.class);
+			
+			//set parameter on query
+			
+			query.setParameter("theInstructorId", theId);
+			
+			// execute the Query and get instructor
+			
+			Instructor tempInstructor = query.getSingleResult();
+			
+			System.out.println("The instructor is: " + tempInstructor);
+			
 			
 			// commit the transaction 
 			session.getTransaction().commit();
@@ -48,8 +60,8 @@ public class EagerLazyDemo {
 			//close the session
 			session.close();
 			
-			//since courses are lazy loaded so this should fail
-			//to overcome the issue Option 1: Call the getter method before closing the session, like in line 41
+			//Using Option two, even though it is lazy loaded it should print
+		
 			
 			System.out.println("Latest:  The courses are=" + tempInstructor.getCourses());
 	}
