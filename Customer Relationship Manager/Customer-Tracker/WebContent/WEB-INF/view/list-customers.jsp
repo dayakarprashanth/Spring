@@ -53,6 +53,11 @@
 					<c:param name="customerId" value="${tempCustomer.id}" />
 		
 				</c:url>
+				<!-- Construct an "delete" link with Customer ID -->
+				<c:url var="deleteLink" value="/customer/delete"> 
+					<c:param name="customerId" value="${tempCustomer.id}" />
+				
+				</c:url>
 				
 				<tr>
 					<td> ${tempCustomer.firstName} </td>
@@ -61,6 +66,10 @@
 					<td> 
 						<!-- Display the Update Link -->
 						<a href="${updateLink}">Update</a> 
+						|
+						<!-- Using java script code to prompt the alert message -->
+						<a href="${deleteLink}"
+						onclick= "if(!(confirm('Are you sure you want to delete the Customer?')))return false">Delete</a>
 					</td>			
 				</tr>
 				</c:forEach>
