@@ -9,4 +9,10 @@ public class AccountDAO {
 		
 		System.out.println(getClass() + "Add an account");
 	}
+	
+	public void deleteAccount()
+	{
+		System.out.println(getClass() + "Deleteing the Account");
+	}
 }
+
