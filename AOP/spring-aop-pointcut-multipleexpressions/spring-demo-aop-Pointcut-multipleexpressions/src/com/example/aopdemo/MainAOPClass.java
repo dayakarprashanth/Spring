@@ -25,9 +25,6 @@ public class MainAOPClass {
 		theAccountDAO.addAccount();
 		theAccountDAO.deleteAccount();
 		
-		//for savings account 
-		theSavingsAccount.addAccount();
-		
 		//Printing some getter and setter methods
 		
 		String a = theAccountDAO.getName();
@@ -36,7 +33,8 @@ public class MainAOPClass {
 		theAccountDAO.setName("  ");
 		theAccountDAO.setEmail("  ");
 		
-		
+		//for savings account 
+		theSavingsAccount.addAccount();
 		
 		
 		//close context

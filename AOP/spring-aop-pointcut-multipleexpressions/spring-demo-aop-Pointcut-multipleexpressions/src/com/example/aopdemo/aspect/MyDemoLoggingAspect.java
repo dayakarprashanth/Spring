@@ -14,15 +14,25 @@ public class MyDemoLoggingAspect {
 	//point cut declaration
 	@Pointcut("execution(* com.example.aopdemo.dao.*.*())")
 	private void forDAOpackage() {}
-
+	
+	@Pointcut("execution(* com.example.aopdemo.dao.AccountDAO.set*())")
+	private void setterDAOMethods() {}
+	
+	@Pointcut("execution(* com.example.aopdemo.dao.AccountDAO.get*())")
+	private void getterDAOMethods() {}
+	
+	@Pointcut("forDAOpackage() && !(getterDAOMethods() || setterDAOMethods())")
+	private void excludingGetterSetterMethods() {}
+	
+	
 	//@Before Advise
-	@Before("forDAOpackage()")
+	@Before("excludingGetterSetterMethods()")
 	public void beforeAdviseLogging() {
 		
 		System.out.println("\n =========> Executing @Before Advise ========= JUST LOGGING");
 	}
 	
-	@Before("forDAOpackage()")
+	@Before("excludingGetterSetterMethods()")
 	public void beforeAdviseSecurityCheck() {
 		
 		System.out.println("\n ==> Executing @Before Advise ===========  Passing Security Check");
